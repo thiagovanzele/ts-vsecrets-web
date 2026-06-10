@@ -1,0 +1,18 @@
+{
+  "semi": true,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": "packages/**/src/locales/**/*.json",
+      "options": {
+        "useTabs": false,
+        "tabWidth": 2
+      }
+    }
+  ]
+}

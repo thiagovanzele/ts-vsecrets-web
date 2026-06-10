@@ -1,18 +1,15 @@
 // MenuLateral/index.tsx
 
-import {
-  FiBox,
-  FiGrid,
-  FiMenu,
-  FiPackage,
-  FiShoppingCart,
-} from "react-icons/fi";
+import { FiBox, FiGrid, FiMenu, FiPackage, FiShoppingCart } from 'react-icons/fi';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { MenuButton } from "../MenuButton";
-
-import { Container, MenuContainer } from "./styles";
+import { MenuButton } from '../MenuButton';
+import { HiSparkles } from 'react-icons/hi';
+import { MdAutoAwesome } from 'react-icons/md';
+import { HiOutlineSparkles } from 'react-icons/hi';
+import { PiStarFourFill } from 'react-icons/pi';
+import { Container, MenuContainer } from './styles';
 
 export const MenuLateral = () => {
   const [showMenu, setShowMenu] = useState(true);
@@ -20,7 +17,11 @@ export const MenuLateral = () => {
   return (
     <Container $showMenu={showMenu}>
       <header>
-        {showMenu && <h1>TSecrets</h1>}
+        {showMenu && (
+          <div className="logo">
+            <h1>VELARIS</h1> <HiOutlineSparkles size={20} color="#e2c028" />
+          </div>
+        )}
 
         <button onClick={() => setShowMenu((prev) => !prev)}>
           <FiMenu size={24} />
@@ -37,9 +38,7 @@ export const MenuLateral = () => {
         <MenuButton nome="Produtos" icon={FiBox} showMenu={showMenu} />
       </MenuContainer>
 
-      <footer>
-        {showMenu ? "Criado por Thiago vanzele o GATO MIAUUUUU" : "MIAU"}
-      </footer>
+      <footer>{showMenu ? `Github: thiagovanzele` : 'TV'}</footer>
     </Container>
   );
 };

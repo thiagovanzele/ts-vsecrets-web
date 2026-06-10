@@ -1,21 +1,13 @@
-// MenuLateral/styles.ts
+import styled from 'styled-components';
 
-import styled from "styled-components";
-
-import {
-  AZUL_MARINHO_100,
-  AZUL_MARINHO_90,
-  BRANCO_100,
-  BRANCO_80,
-} from "../../utils/constants";
+import { AZUL_MARINHO_100, AZUL_MARINHO_90, BRANCO_100, CINZA_LINHA } from '../../utils/constants';
 
 interface ContainerProps {
   $showMenu: boolean;
 }
 
 export const Container = styled.div<ContainerProps>`
-  width: ${({ $showMenu }) => ($showMenu ? "300px" : "90px")};
-  height: 100vh;
+  width: ${({ $showMenu }) => ($showMenu ? '300px' : '90px')};
   background-color: ${AZUL_MARINHO_90};
   transition: width 0.3s ease;
   overflow: hidden;
@@ -27,10 +19,14 @@ export const Container = styled.div<ContainerProps>`
     background-color: ${AZUL_MARINHO_100};
     padding: 20px;
     display: flex;
-    align-items: center;
 
-    justify-content: ${({ $showMenu }) =>
-      $showMenu ? "space-between" : "center"};
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    justify-content: ${({ $showMenu }) => ($showMenu ? 'space-between' : 'center')};
 
     color: ${BRANCO_100};
 
@@ -56,12 +52,12 @@ export const Container = styled.div<ContainerProps>`
     left: 0;
     text-align: center;
     width: 100%;
-    border-top: 1px solid ${BRANCO_80};
+    border-top: 1px solid ${CINZA_LINHA};
     display: flex;
     justify-content: center;
     align-items: center;
-    color: ${BRANCO_100};
-    padding: 20px 0;
+    color: ${CINZA_LINHA};
+    padding-top: 20px;
   }
 `;
 

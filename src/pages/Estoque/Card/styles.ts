@@ -1,7 +1,11 @@
 import styled from "styled-components";
-import { AZUL_MARINHO_80, AZUL_MARINHO_90, BRANCO_100, BRANCO_80, CINZA_40, ROXO_100, ROXO_90, VERDE_100, VERDE_50 } from "../../../utils/constants";
+import { AZUL_MARINHO_80, BRANCO_100, BRANCO_80, CINZA_40, ROXO_100, ROXO_90, VERDE_100, VERDE_50 } from "../../../utils/constants";
 
-export const Container = styled.div`
+interface ContainerProps {
+  $bgColor: string;
+}
+
+export const Container = styled.div<ContainerProps>`
   width: 320px;
   background-color: ${AZUL_MARINHO_80};
   display: flex;
@@ -17,10 +21,10 @@ export const Container = styled.div`
 
     > svg {
         color: ${VERDE_50};
-        
+
     }
 
-    > span {
+    .valor-estoque {
         color: ${VERDE_50};
     }
   }
@@ -31,10 +35,12 @@ export const Container = styled.div`
     margin-bottom: 10px;
 
     .icon {
-        background-color: ${ROXO_100};
-        padding: 10px 20px;
-        color: ${BRANCO_100};
-        border-radius: 8px;
+      background-color: ${({ $bgColor }) => ($bgColor)} ;
+      padding: 10px 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .content {
@@ -47,7 +53,7 @@ export const Container = styled.div`
         font-size: 11px;
         color: ${CINZA_40};
       }
-      
+
       .value {
         font-size: 20px;
       }
