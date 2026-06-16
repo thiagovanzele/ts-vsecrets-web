@@ -8,10 +8,13 @@ import {
   CINZA_LINHA,
   LARANJA_100,
   LARANJA_50,
+  VERDE_100,
+  VERDE_50,
   VERDE_60,
   VERDE_90,
   VERMELHO_100,
   VERMELHO_50,
+  VERMELHO_60,
 } from '../../utils/constants';
 
 export const Container = styled.div`
@@ -263,15 +266,16 @@ export const TabelaMovimentações = styled.table`
 
       .item-entrada {
         padding: 4px 10px;
-        background-color: ${VERDE_60};
-        color: ${VERDE_90};
+        background-color: ${VERDE_100};
+        color: ${VERDE_50};
         border-radius: 4px;
+        width: 50px;
       }
 
       .item-saida {
-        padding: 4px 10px;
+        padding: 4px 20px;
+        color: ${VERMELHO_60};
         background-color: ${VERMELHO_50};
-        color: ${VERMELHO_100};
         border-radius: 4px;
       }
     }

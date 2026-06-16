@@ -1,0 +1,396 @@
+import { FiChevronDown, FiEdit2, FiSave, FiSearch, FiTrash2 } from 'react-icons/fi';
+import { Card } from '../Estoque/Card';
+import {
+  Container,
+  InnerContainer,
+  Line,
+  ModalEditarProduto,
+  Overlay,
+  Status,
+  TabelaProdutos,
+} from './style';
+import {
+  AMARELO_60,
+  CINZA_LINHA_CLARO,
+  ROXO_100,
+  ROXO_40,
+  VERMELHO_60,
+} from '../../utils/constants';
+import { useEffect, useState, type JSX } from 'react';
+
+export type StatusProduto = 'Em Estoque' | 'Estoque Baixo' | 'Sem Estoque';
+
+interface Produto {
+  id: number;
+  nome: string;
+  categoria: string;
+  estoque: number;
+  preco: number;
+  status: StatusProduto;
+}
+
+export const Produtos = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [textoBusca, setTextoBusca] = useState('');
+  const [productSelected, setProductSelect] = useState<Produto | null>(null);
+  const [produtos, setProdutos] = useState<Produto[]>([
+    {
+      id: 1,
+      nome: 'Body Splash Bare Vanilla',
+      categoria: 'Body Splash',
+      estoque: 25,
+      preco: 159.9,
+      status: 'Em Estoque',
+    },
+    {
+      id: 2,
+      nome: 'Body Splash Pure Seduction',
+      categoria: 'Body Splash',
+      estoque: 7,
+      preco: 159.9,
+      status: 'Estoque Baixo',
+    },
+    {
+      id: 3,
+      nome: 'Creme Coconut Passion',
+      categoria: 'Hidratante',
+      estoque: 0,
+      preco: 89.9,
+      status: 'Sem Estoque',
+    },
+  ]);
+
+  const isFormValid =
+    productSelected !== null &&
+    productSelected.nome.trim().length > 0 &&
+    productSelected.categoria.trim().length > 0 &&
+    productSelected.estoque > 0 &&
+    productSelected.preco > 0;
+
+  const isEditing = productSelected !== null && productSelected.id !== 0;
+
+  const obterStatus = (estoque: number): StatusProduto => {
+    if (estoque === 0) return 'Sem Estoque';
+    if (estoque <= 10) return 'Estoque Baixo';
+    return 'Em Estoque';
+  };
+
+  const selecionarProduto = (produto: Produto): void => {
+    setProductSelect(produto);
+    setShowModal(true);
+  };
+
+  const adicionarProduto = (): void => {
+    setShowModal(true);
+    setProductSelect({
+      id: 0,
+      nome: '',
+      categoria: '',
+      estoque: 0,
+      preco: 0,
+      status: 'Sem Estoque',
+    });
+  };
+
+  const excluirProduto = (id: number): void => {
+    setProdutos((prev) => prev.filter((produto) => produto.id !== id));
+  };
+
+  const handleSaveBtn = (): void => {
+    if (!productSelected) return;
+
+    const produtoAtualizado: Produto = {
+      ...productSelected,
+      status: obterStatus(productSelected.estoque),
+    };
+
+    if (isEditing) {
+      setProdutos((prev) =>
+        prev.map((produto) => (produto.id === produtoAtualizado.id ? produtoAtualizado : produto))
+      );
+    } else {
+      const novoProduto: Produto = {
+        ...produtoAtualizado,
+        id: Date.now(),
+      };
+
+      setProdutos((prev) => [...prev, novoProduto]);
+    }
+
+    setShowModal(false);
+    setProductSelect(null);
+  };
+
+  const produtosFiltrados = produtos.filter((produto) =>
+    produto.nome.toLowerCase().includes(textoBusca.toLowerCase())
+  );
+
+  const renderModalHeader = (): JSX.Element => {
+    if (isEditing) {
+      return (
+        <>
+          <h4>Editar Produto</h4>
+          <span>Altere as informações do produto abaixo.</span>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <h4>Adicionar Produto</h4>
+        <span>Insira as informações do produto abaixo.</span>
+      </>
+    );
+  };
+
+  return (
+    <Container>
+      <h1>Produtos</h1>
+
+      <Line>
+        <Card
+          title={'Total de Produtos'}
+          headerText={'1.250'}
+          footerValue={'3.1%'}
+          footerText="em relação ao mês passado"
+          width="250px"
+        />
+
+        <Card
+          title={'Em estoque'}
+          headerText={'1.080'}
+          footerValue={'86%'}
+          footerText="do total"
+          width="250px"
+        />
+
+        <Card
+          title={'Estoque Baixo'}
+          headerText={'23'}
+          footerValue={'1.8%'}
+          footerText="do total"
+          width="250px"
+        />
+
+        <Card
+          title={'Sem Estoque'}
+          headerText={'147'}
+          footerValue={'11.8%'}
+          footerText="do total"
+          width="250px"
+        />
+      </Line>
+
+      <Line>
+        <div className="input-container">
+          <FiSearch size={18} color={`${CINZA_LINHA_CLARO}`} />
+
+          <input
+            type="text"
+            value={textoBusca}
+            onChange={(e): void => setTextoBusca(e.target.value)}
+            placeholder="Buscar produto..."
+          />
+        </div>
+
+        <div className="container-botao">
+          <button onClick={(): void => adicionarProduto()} className="btn-adicionar-produto">
+            + Novo Produto
+          </button>
+        </div>
+      </Line>
+
+      <InnerContainer>
+        <TabelaProdutos>
+          <thead>
+            <tr>
+              <th colSpan={2}>Produto</th>
+              <th>Categoria</th>
+              <th>Estoque</th>
+              <th>Preço</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {produtosFiltrados.length > 0 ? (
+              produtosFiltrados.map((produto) => (
+                <tr key={produto.id}>
+                  <td colSpan={2}>{produto.nome}</td>
+                  <td>{produto.categoria}</td>
+                  <td>{produto.estoque}</td>
+                  <td>
+                    {produto.preco.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })}
+                  </td>
+                  <td>
+                    <Status status={produto.status}>{produto.status}</Status>
+                  </td>
+                  <td className="actions-container">
+                    <button
+                      className="botao-editar"
+                      onClick={(): void => selecionarProduto(produto)}
+                    >
+                      <FiEdit2 size={18} color={`${AMARELO_60}`} />
+                    </button>
+                    <button className="botao-excluir" onClick={() => excluirProduto(produto.id)}>
+                      <FiTrash2 size={18} color={VERMELHO_60} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6}>
+                  <span>Nenhum produto encontrado</span>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </TabelaProdutos>
+      </InnerContainer>
+
+      {showModal && (
+        <Overlay
+          onClick={(): void => {
+            setShowModal(false);
+            setProductSelect(null);
+          }}
+        >
+          <ModalEditarProduto onClick={(e) => e.stopPropagation()}>
+            <div className="editar-produto-header">
+              <div className="icone-editar">
+                <FiEdit2 size={18} />
+              </div>
+
+              <div className="editar-produto-content">{renderModalHeader()}</div>
+            </div>
+
+            <div className="info-produto">
+              <div className="campo">
+                <label>Nome do Produto</label>
+
+                <div className="input-container">
+                  <input
+                    type="text"
+                    value={productSelected.nome}
+                    onChange={(e) =>
+                      setProductSelect((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              nome: e.target.value,
+                            }
+                          : prev
+                      )
+                    }
+                    placeholder="Digite o nome do produto"
+                  />
+                </div>
+              </div>
+
+              <div className="campo">
+                <label>Categoria</label>
+
+                <div className="select-container">
+                  <select
+                    value={productSelected.categoria}
+                    onChange={(e) =>
+                      setProductSelect((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              categoria: e.target.value,
+                            }
+                          : prev
+                      )
+                    }
+                  >
+                    <option value="">Selecione uma categoria</option>
+                    <option value="Informática">Informática</option>
+                    <option value="Eletrônicos">Eletrônicos</option>
+                    <option value="Acessórios">Acessórios</option>
+                    <option value="Body Splash">Body Splash</option>
+                    <option value="Hidratante">Hidratante</option>
+                  </select>
+
+                  <FiChevronDown size={18} className="select-icon" />
+                </div>
+              </div>
+
+              <div className="campo">
+                <label>Estoque</label>
+
+                <div className="estoque-container">
+                  <input
+                    type="number"
+                    value={productSelected.estoque || ''}
+                    onChange={(e) =>
+                      setProductSelect((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              estoque: e.target.value === '' ? 0 : Number(e.target.value),
+                            }
+                          : prev
+                      )
+                    }
+                    placeholder="Digite o estoque"
+                  />
+
+                  <span>un.</span>
+                </div>
+              </div>
+
+              <div className="campo">
+                <label>Preço</label>
+
+                <div className="preco-container">
+                  <span>R$</span>
+
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={productSelected.preco || ''}
+                    onChange={(e) =>
+                      setProductSelect((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              preco: e.target.value === '' ? 0 : Number(e.target.value),
+                            }
+                          : prev
+                      )
+                    }
+                    placeholder="0,00"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="botoes-container">
+              <div className="botoes">
+                <button
+                  onClick={(): void => {
+                    setShowModal(false);
+                    setProductSelect(null);
+                  }}
+                  className="btn-cancelar"
+                >
+                  Cancelar
+                </button>
+
+                <button onClick={handleSaveBtn} disabled={!isFormValid} className="btn-salvar">
+                  <FiSave size={18} /> {isEditing ? 'Salvar Alterações' : 'Adicionar Produto'}
+                </button>
+              </div>
+            </div>
+          </ModalEditarProduto>
+        </Overlay>
+      )}
+    </Container>
+  );
+};

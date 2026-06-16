@@ -12,6 +12,7 @@ export const CINZA_60 = '#64748B';
 export const CINZA_50 = '#94A3B8';
 export const CINZA_40 = '#CBD5E1';
 export const CINZA_10 = '#F1F5F9';
+export const CINZA_LINHA_CLARO = '#2A3441';
 export const CINZA_LINHA = '#1F2937';
 
 export const ROXO_100 = '#2E1065';
@@ -36,12 +37,12 @@ export const VERDE_70 = '#15803D';
 export const VERDE_60 = '#0D2B23';
 export const VERDE_50 = '#22C55E';
 
-export const LARANJA_100 = '#DA8B42'; // quase creme com toque laranja
+export const LARANJA_100 = '#DA8B42';
 export const LARANJA_90 = '#4c9965';
 export const LARANJA_80 = '#FDBA74';
 export const LARANJA_70 = '#FB923C';
-export const LARANJA_60 = '#F97316'; // laranja principal (mais equilibrado)
-export const LARANJA_50 = '#291f16'; // ainda vibrante, mas menos agressivo
+export const LARANJA_60 = '#F97316';
+export const LARANJA_50 = '#291f16';
 
 export const VERMELHO_100 = '#A8454A';
 export const VERMELHO_90 = '#7F1D1D';
@@ -49,6 +50,13 @@ export const VERMELHO_80 = '#991B1B';
 export const VERMELHO_70 = '#B91C1C';
 export const VERMELHO_60 = '#DC2626';
 export const VERMELHO_50 = '#27151C';
+
+export const AMARELO_100 = '#A16207';
+export const AMARELO_90 = '#854D0E';
+export const AMARELO_80 = '#CA8A04';
+export const AMARELO_70 = '#EAB308';
+export const AMARELO_60 = '#FACC15';
+export const AMARELO_50 = '#2A2112';
 
 export const BRANCO_100 = '#FFFFFF';
 export const BRANCO_90 = '#F8FAFC';

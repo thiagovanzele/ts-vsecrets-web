@@ -1,18 +1,15 @@
-// MenuLateral/index.tsx
-
 import { FiBox, FiGrid, FiMenu, FiPackage, FiShoppingCart } from 'react-icons/fi';
 
 import { useState } from 'react';
 
 import { MenuButton } from '../MenuButton';
-import { HiSparkles } from 'react-icons/hi';
-import { MdAutoAwesome } from 'react-icons/md';
 import { HiOutlineSparkles } from 'react-icons/hi';
-import { PiStarFourFill } from 'react-icons/pi';
 import { Container, MenuContainer } from './styles';
+import { useNavigate } from 'react-router-dom';
 
 export const MenuLateral = () => {
   const [showMenu, setShowMenu] = useState(true);
+  const navigate = useNavigate();
 
   return (
     <Container $showMenu={showMenu}>
@@ -33,9 +30,19 @@ export const MenuLateral = () => {
 
         <MenuButton nome="Vendas" icon={FiShoppingCart} showMenu={showMenu} />
 
-        <MenuButton nome="Estoque" icon={FiPackage} showMenu={showMenu} />
+        <MenuButton
+          onClick={() => navigate('/estoque')}
+          nome="Estoque"
+          icon={FiPackage}
+          showMenu={showMenu}
+        />
 
-        <MenuButton nome="Produtos" icon={FiBox} showMenu={showMenu} />
+        <MenuButton
+          onClick={() => navigate('/produtos')}
+          nome="Produtos"
+          icon={FiBox}
+          showMenu={showMenu}
+        />
       </MenuContainer>
 
       <footer>{showMenu ? `Github: thiagovanzele` : 'TV'}</footer>
