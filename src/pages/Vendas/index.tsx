@@ -1,15 +1,7 @@
-import { FiChevronDown, FiEdit2, FiSave, FiSearch, FiTrash2 } from 'react-icons/fi';
+import { FiChevronDown, FiEdit2, FiSearch, FiTrash2, FiX } from 'react-icons/fi';
 import { Card } from '../Estoque/Card';
-import {
-  Container,
-  InnerContainer,
-  Line,
-  ModalEditarProduto,
-  Overlay,
-  Status,
-  TabelaProdutos,
-} from './style';
-import { AMARELO_60, CINZA_LINHA_CLARO, VERMELHO_60 } from '../../utils/constants';
+import { Container, InnerContainer, Line, VendaContainer } from './style';
+import { AMARELO_60, CINZA_50, CINZA_LINHA_CLARO, VERMELHO_60 } from '../../utils/constants';
 import { useState, type JSX } from 'react';
 
 export type StatusProduto = 'Em Estoque' | 'Estoque Baixo' | 'Sem Estoque';
@@ -23,7 +15,7 @@ interface Produto {
   status: StatusProduto;
 }
 
-export const Produtos = () => {
+export const Vendas = () => {
   const [showModal, setShowModal] = useState(false);
   const [textoBusca, setTextoBusca] = useState('');
   const [productSelected, setProductSelect] = useState<Produto | null>(null);
@@ -139,7 +131,7 @@ export const Produtos = () => {
 
   return (
     <Container>
-      <h1>Produtos</h1>
+      <h1>Vendas</h1>
 
       <Line>
         <Card
@@ -195,7 +187,7 @@ export const Produtos = () => {
       </Line>
 
       <InnerContainer>
-        <TabelaProdutos>
+        {/* <TabelaProdutos>
           <thead>
             <tr>
               <th colSpan={2}>Produto</th>
@@ -244,54 +236,30 @@ export const Produtos = () => {
               </tr>
             )}
           </tbody>
-        </TabelaProdutos>
+        </TabelaProdutos> */}
       </InnerContainer>
 
-      {showModal && (
-        <Overlay
-          onClick={(): void => {
-            setShowModal(false);
-            setProductSelect(null);
-          }}
-        >
-          <ModalEditarProduto onClick={(e) => e.stopPropagation()}>
-            <div className="editar-produto-header">
-              <div className="icone-editar">
-                <FiEdit2 size={18} />
-              </div>
-
-              <div className="editar-produto-content">{renderModalHeader()}</div>
+      {!showModal && (
+        <VendaContainer>
+          <div className="venda-header">
+            <div className="content">
+              <h2>Nova venda</h2>
+              <span>Preencha os dados da venda abaixo.</span>
             </div>
+            <button className="btn-fechar">
+              <FiX color={`${CINZA_50}`} size={24} />
+            </button>
+          </div>
 
-            <div className="info-produto">
+          <div className="vendas-content">
+            <span>Itens da Venda</span>
+
+            <div className="produto-venda">
               <div className="campo">
-                <label>Nome do Produto</label>
-
-                <div className="input-container">
-                  <input
-                    type="text"
-                    value={productSelected.nome}
-                    onChange={(e) =>
-                      setProductSelect((prev) =>
-                        prev
-                          ? {
-                              ...prev,
-                              nome: e.target.value,
-                            }
-                          : prev
-                      )
-                    }
-                    placeholder="Digite o nome do produto"
-                  />
-                </div>
-              </div>
-
-              <div className="campo">
-                <label>Categoria</label>
+                <label>Produto</label>
 
                 <div className="select-container">
                   <select
-                    value={productSelected.categoria}
                     onChange={(e) =>
                       setProductSelect((prev) =>
                         prev
@@ -303,7 +271,7 @@ export const Produtos = () => {
                       )
                     }
                   >
-                    <option value="">Selecione uma categoria</option>
+                    <option value="">Selecione o produto</option>
                     <option value="Informática">Informática</option>
                     <option value="Eletrônicos">Eletrônicos</option>
                     <option value="Acessórios">Acessórios</option>
@@ -316,12 +284,11 @@ export const Produtos = () => {
               </div>
 
               <div className="campo">
-                <label>Estoque</label>
+                <label>Qtd.</label>
 
-                <div className="estoque-container">
+                <div className="qtd-container">
                   <input
                     type="number"
-                    value={productSelected.estoque || ''}
                     onChange={(e) =>
                       setProductSelect((prev) =>
                         prev
@@ -332,10 +299,7 @@ export const Produtos = () => {
                           : prev
                       )
                     }
-                    placeholder="Digite o estoque"
                   />
-
-                  <span>un.</span>
                 </div>
               </div>
 
@@ -346,9 +310,9 @@ export const Produtos = () => {
                   <span>R$</span>
 
                   <input
+                    disabled={true}
                     type="number"
                     step="0.01"
-                    value={productSelected.preco || ''}
                     onChange={(e) =>
                       setProductSelect((prev) =>
                         prev
@@ -364,26 +328,8 @@ export const Produtos = () => {
                 </div>
               </div>
             </div>
-
-            <div className="botoes-container">
-              <div className="botoes">
-                <button
-                  onClick={(): void => {
-                    setShowModal(false);
-                    setProductSelect(null);
-                  }}
-                  className="btn-cancelar"
-                >
-                  Cancelar
-                </button>
-
-                <button onClick={handleSaveBtn} disabled={!isFormValid} className="btn-salvar">
-                  <FiSave size={18} /> {isEditing ? 'Salvar Alterações' : 'Adicionar Produto'}
-                </button>
-              </div>
-            </div>
-          </ModalEditarProduto>
-        </Overlay>
+          </div>
+        </VendaContainer>
       )}
     </Container>
   );

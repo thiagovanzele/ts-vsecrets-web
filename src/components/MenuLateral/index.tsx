@@ -28,7 +28,12 @@ export const MenuLateral = () => {
       <MenuContainer>
         <MenuButton nome="Dashboard" icon={FiGrid} showMenu={showMenu} />
 
-        <MenuButton nome="Vendas" icon={FiShoppingCart} showMenu={showMenu} />
+        <MenuButton
+          onClick={() => navigate('/vendas')}
+          nome="Vendas"
+          icon={FiShoppingCart}
+          showMenu={showMenu}
+        />
 
         <MenuButton
           onClick={() => navigate('/estoque')}
